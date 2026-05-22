@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurelius Asset Management | Institutional Portal</title>
+    <style>
+        :root {
+            --primary: #0a192f;
+            --primary-light: #172a45;
+            --accent: #b89750; /* Institutional Gold */
+            --accent-hover: #9c7f40;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            color: var(--primary);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(23,42,69,0.4) 0%, rgba(10,25,47,1) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--primary);
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            color: var(--bg-white);
+        }
+
+        /* Main Layout Containers */
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        /* Portfolio Strategy Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-top: 3px solid var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Tracker Section Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-value.positive {
+            color: var(--success);
+        }
+
+        /* Interactive Table & Form */
+        .tracker-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-actions {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .table-filter-btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .table-filter-btn.active, .table-filter-btn:hover {
+            background: var(--primary);
+            color: var(--bg-white);
+            border-color: var(--primary);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.5rem;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+
+        .badge.buy { background: #d1fae5; color: #065f46; }
+        .badge.sell { background: #fee2e2; color: #991b1b; }
+
+        /* Quick Execution Tool Form */
+        .execution-panel {
+            background: #f1f5f9;
+            padding: 2rem;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+
+        .execution-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            background: var(--bg-white);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        /* Interactive Career Section Accordion */
+        .accordion {
+            margin-top: 2rem;
+        }
+
+        .accordion-item {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            margin-bottom: 0.75rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1.5rem;
+            background: var(--bg-white);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: #fafafa;
+        }
+
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.2rem;
+            color: var(--accent);
+            transition: transform 0.2s;
+        }
+
+        .accordion-item.active .accordion-header::after {
+            content: '−';
+        }
+
+        .accordion-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 0 solid transparent;
+        }
+
+        .accordion-item.active .accordion-content {
+            padding: 1.5rem;
+            max-height: 500px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Tips Grid Layout */
+        .tips-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .tip-box {
+            background: var(--primary-light);
+            color: var(--bg-white);
+            padding: 2rem;
+            position: relative;
+            border-left: 4px solid var(--accent);
+        }
+
+        .tip-box h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: #64748b;
+            padding: 4rem 2rem;
+            font-size: 0.8rem;
+            border-top: 1px solid var(--primary-light);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand p {
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .disclaimer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--primary-light);
+            line-height: 1.8;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Mobile Responsive Configurations */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav a {
+                margin: 0 0.75rem;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .execution-form {
+                grid-template-columns: 1fr;
+            }
+            .execution-form .btn {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Aurelius<span>.</span></a>
+            <nav id="main-nav">
+                <a href="#portfolio" class="active">Portfolio Strategy</a>
+                <a href="#tracker">Ledger Tracker</a>
+                <a href="#insights">Pro Insights</a>
+                <a href="#careers">IB Blueprint</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" style="max-width: none;">
+        <div class="hero-content">
+            <h1>Institutional Wealth Management Precision</h1>
+            <p>Deploying alternative global investment solutions, quantitative asset tracking, and structural career blueprints designed alongside industry veterans.</p>
+            <a href="#tracker" class="btn">Access Institutional Tracker</a>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2 class="section-title">Portfolio Architecture</h2>
+        <p class="section-subtitle">How elite institutions configure global asset frameworks to preserve multi-generational capital and command market alpha.</p>
+        
+        <div class="grid-3">
+            <div class="card">
+                <h3>Asset Allocation Matrix</h3>
+                <p>We execute structural shifts into alternatives—private credit, infrastructure, and real estate—mitigating systemic public market beta variances.</p>
+            </div>
+            <div class="card">
+                <h3>Risk Mitigation</h3>
+                <p>Utilizing dynamic, institutional-grade mathematical models to match historical volatility profiles against real-time macro-economic updates.</p>
+            </div>
+            <div class="card">
+                <h3>Liquidity Arbitrage</h3>
+                <p>Strategically locking portions of long-duration capital in exchange for premium yields unavailable to retail market environments.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tracker" style="background-color: var(--bg-white); max-width: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <h2 class="section-title">Institutional Ledger Tracker</h2>
+            <p class="section-subtitle">A live framework simulating transaction ledgers, active trades, and automated gross revenue metrics generated dynamically.</p>
+            
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Gross Revenue (YTD)</div>
+                    <div class="metric-value positive" id="metric-revenue">$1,482,900</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Transacted Volume</div>
+                    <div class="metric-value" id="metric-volume">342,000 Units</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Win Ratio Metrics</div>
+                    <div class="metric-value" style="color: var(--accent);">78.4%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Ledger Entries</div>
+                    <div class="metric-value" id="metric-count">4</div>
+                </div>
+            </div>
+
+            <div class="tracker-container">
+                <div class="table-actions">
+                    <div>
+                        <button class="table-filter-btn active" onclick="filterLedger('all', this)">All Records</button>
+                        <button class="table-filter-btn" onclick="filterLedger('buy', this)">Buys Only</button>
+                        <button class="table-filter-btn" onclick="filterLedger('sell', this)">Sells Only</button>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Real-Time Execution Logs</span>
+                </div>
+                <div class="table-wrapper">
+                    <table id="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Asset Identification</th>
+                                <th>Transaction Type</th>
+                                <th>Volume (Qty)</th>
+                                <th>Execution Price</th>
+                                <th>Net Revenue Generated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-body">
+                            <tr data-type="buy">
+                                <td>2026-05-20 14:22</td>
+                                <td><strong>AAPL / USD Block</strong></td>
+                                <td><span class="badge buy">Buy</span></td>
+                                <td>15,000</td>
+                                <td>$172.50</td>
+                                <td>$2,587,500 (Allocated)</td>
+                            </tr>
+                            <tr data-type="sell">
+                                <td>2026-05-20 11:05</td>
+                                <td><strong>EUR / USD Option Lot</strong></td>
+                                <td><span class="badge sell">Sell</span></td>
+                                <td>120,000</td>
+                                <td>$1.0850</td>
+                                <td>+$432,000</td>
+                            </tr>
+                            <tr data-type="sell">
+                                <td>2026-05-19 16:40</td>
+                                <td><strong>US10Y Treasury Notes</strong></td>
+                                <td><span class="badge sell">Sell</span></td>
+                                <td>200,000</td>
+                                <td>$98.22</td>
+                                <td>+$985,400</td>
+                            </tr>
+                            <tr data-type="buy">
+                                <td>2026-05-19 09:15</td>
+                                <td><strong>XAU / USD (Spot Gold)</strong></td>
+                                <td><span class="badge buy">Buy</span></td>
+                                <td>7,000</td>
+                                <td>$2,350.00</td>
+                                <td>$16,450,000 (Allocated)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="execution-panel">
+                <h3 style="font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Simulate Live Institutional Order Execution</h3>
+                <form class="execution-form" id="orderForm" onsubmit="executeMockOrder(event)">
+                    <div class="form-group">
+                        <label for="assetInput">Asset Descriptor</label>
+                        <input type="text" id="assetInput" placeholder="e.g., MSFT Equity Block" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="typeInput">Execution Matrix</label>
+                        <select id="typeInput">
+                            <option value="buy">BUY (Capital Allocation)</option>
+                            <option value="sell">SELL (Revenue Trigger)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeInput">Total Volume (Qty)</label>
+                        <input type="number" id="volumeInput" placeholder="000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="priceInput">Execution Metrics ($)</label>
+                        <input type="number" step="0.01" id="priceInput" placeholder="0.00" required>
+                    </div>
+                    <button type="submit" class="btn">Execute Order</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="insights">
+        <h2 class="section-title">Institutional Tips & Tactics</h2>
+        <p class="section-subtitle">Foundational, behind-the-closed-doors mechanics execution strategies deployed daily by global desk managers.</p>
+        
+        <div class="tips-container">
+            <div class="tip-box">
+                <h4>01 / Master Volume Weighted Average Price</h4>
+                <p>Never cross wide retail spreads. Break size down block by block matching VWAP algorithms over defined daily time distributions.</p>
+            </div>
+            <div class="tip-box">
+                <h4>02 / The EBITDA Adjustments Shield</h4>
+                <p>When modeling companies, scrutinize non-recurring items carefully. Companies artificially pad free-cash-flow metrics by modifying standard metrics.</p>
+            </div>
+            <div class="tip-box">
+                <h4>03 / Hedging Currency Fluctuations</h4>
+                <p>Top portfolio desks routinely immunize international acquisitions by executing custom, cost-effective cross-currency forward contracts.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="careers" style="border-top: 1px solid var(--border);">
+        <h2 class="section-title">The Investment Banking Pipeline</h2>
+        <p class="section-subtitle">An end-to-end interactive career layout mapping exact operational routes toward Bulge Bracket analyst offers.</p>
+        
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">Phase I: Technical Valuation Expertise</div>
+                <div class="accordion-content">
+                    <p>To withstand intense MD interviews, you must build absolute competency in corporate finance theory. Master Three-Statement Modeling configurations, Discounted Cash Flow (DCF) models, Leveraged Buyout (LBO) frameworks, and accurate Public Comps analysis. Know precisely how a $10 depreciation change cascades through every financial spreadsheet line item.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">Phase II: High-Yield Informational Interviewing</div>
+                <div class="accordion-content">
+                    <p>Applications submitted casually into broad standard portals rarely yield interviews. You must identify alumni or operational directors via LinkedIn, scheduling concise 15-minute phone calls. Ask insightful questions regarding market transaction bottlenecks rather than simple, basic informational queries.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">Phase III: Perfecting the Elite Deal Sheet Profile</div>
+                <div class="accordion-content">
+                    <p>Format resumes flawlessly to conform strictly to investment banking templates (no accent colors, traditional font stacks, explicit analytical focus). Structure line items using the action-focused formula: **Action Taken + Financial Metric Manipulated = Market Output Achieved**.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">Phase IV: Surviving the Superday Evaluation</div>
+                <div class="accordion-content">
+                    <p>Superday interviews examine your endurance. Be prepared for rapid-fire technical queries combined with strict behavioral evaluations designed to measure your capability to operate effectively during intensive, high-stress 90-hour work weeks. Always maintain perfect composure and professionalism.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo" style="color: var(--bg-white);">Aurelius<span>.</span></a>
+                <p>An experimental, high-performance mock platform designed exclusively to simulate elite institutional corporate data processing and structural portfolio mechanics.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#portfolio">Strategy</a>
+                <a href="#tracker">Ledger</a>
+                <a href="#insights">Tactics</a>
+                <a href="#careers">IB Blueprint</a>
+            </div>
+        </div>
+        <div class="disclaimer">
+            <strong>Regulatory Disclosure:</strong> This application serves strictly as an educational user-experience prototype model simulating investment tracking methods. The data displayed is generated synthetically and should not be construed as verified market reporting, legal financial structuring, or live trading guidance. Aurelius Asset Management is a conceptual presentation entity. All mock trade activities, revenues, and pipeline strategies are provided for illustrative framework evaluation only.
+        </div>
+    </footer>
+
+    <script>
+        // Real-Time Accumulator State variables
+        let totalRevenue = 1482900;
+        let transactedVolume = 342000;
+        let totalEntries = 4;
+
+        // Dynamic Order Processing Logic
+        function executeMockOrder(event) {
+            event.preventDefault();
+
+            // Dom Nodes Gathering
+            const assetName = document.getElementById('assetInput').value.trim();
+            const orderType = document.getElementById('typeInput').value;
+            const volume = parseInt(document.getElementById('volumeInput').value);
+            const price = parseFloat(document.getElementById('priceInput').value);
+            
+            if(!assetName || isNaN(volume) || isNaN(price)) return;
+
+            // Generate Timestamp String
+            const now = new Date();
+            const timeString = now.toISOString().replace('T', ' ').substring(0, 16);
+
+            // Compute Financial Impact
+            const totalImpactValue = volume * price;
+            let displayRevenueStr = "";
+
+            if (orderType === 'sell') {
+                totalRevenue += totalImpactValue;
+                displayRevenueStr = `+$${totalImpactValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } else {
+                displayRevenueStr = `$${totalImpactValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} (Allocated)`;
+            }
+
+            transactedVolume += volume;
+            totalEntries += 1;
+
+            // Build Row Node Structures dynamically
+            const tbody = document.getElementById('ledger-body');
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-type', orderType);
+
+            newRow.innerHTML = `
+                <td>${timeString}</td>
+                <td><strong>${escapeHtml(assetName)}</strong></td>
+                <td><span class="badge ${orderType}">${orderType.toUpperCase()}</span></td>
+                <td>${volume.toLocaleString()}</td>
+                <td>$${price.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td class="${orderType === 'sell' ? 'positive' : ''}">${displayRevenueStr}</td>
+            `;
+
+            // Prepends row inside table structure
+            tbody.insertBefore(newRow, tbody.firstChild);
+
+            // Interface States Regeneration
+            updateDashboardMetrics();
+            
+            // Clear Input Form Elements
+            document.getElementById('orderForm').reset();
+        }
+
+        // Dashboard Visual Refresh Engine
+        function updateDashboardMetrics() {
+            document.getElementById('metric-revenue').innerText = `$${totalRevenue.toLocaleString()}`;
+            document.getElementById('metric-volume').innerText = `${transactedVolume.toLocaleString()} Units`;
+            document.getElementById('metric-count').innerText = totalEntries;
+        }
+
+        // Table Filtering Control Functions
+        function filterLedger(filterType, element) {
+            // Toggle active styling states across system navigation buttons
+            const buttons = document.querySelectorAll('.table-filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            // Evaluate Row Attribute States
+            const rows = document.querySelectorAll('#ledger-body tr');
+            rows.forEach(row => {
+                const type = row.getAttribute('data-type');
+                if (filterType === 'all' || type === filterType) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Accordion Component Mechanics
+        function toggleAccordion(element) {
+            const item = element.parentElement;
+            const isCurrentlyActive = item.classList.contains('active');
+            
+            // Collapse competing elements across accordion groups
+            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+            
+            if (!isCurrentlyActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Simple Helper to block injection risks
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Intersection Observer logic for Navbar Highlights
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
